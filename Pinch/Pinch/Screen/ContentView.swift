@@ -46,7 +46,7 @@ struct ContentView: View {
                             }
                                 
                         })
-                        //MARK: DRAG
+                        //MARK: DRAG GESTURE
                         .gesture(
                             DragGesture()
                                 .onChanged({ value in
@@ -60,8 +60,31 @@ struct ContentView: View {
                                     }
                                 })
                         )
+                    //MARK: MAGNIFICATION
+                        .gesture(
+                            MagnificationGesture()
+                                .onChanged { value in
+                                    withAnimation(.linear(duration: 1)){
+                                        if (imageScale >= 1 && imageScale <= 5) {
+                                            imageScale = value
+                                        }
+                                        else if (imageScale > 5) {
+                                            imageScale = 5
+                                        }
+                                    }
+                                    
+                                }
+                                .onEnded{_ in
+                                    if( imageScale > 5) {
+                                        imageScale = 5
+                                    }
+                                    if( imageScale <= 1) {
+                                        resetImage()
+                                    }
+                                }
+                        )
                     
-                }
+                } //ZSTACK
                 .navigationTitle("Pinch & Zoom")
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear ( perform: {
